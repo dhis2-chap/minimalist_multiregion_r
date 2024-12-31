@@ -3,6 +3,25 @@ testData_fn <- "C:\\Users\\Halvard\\Documents\\GitHub\\minimalist_multiregion_r\
 bin_fn <- "C:\\Users\\Halvard\\Documents\\GitHub\\minimalist_multiregion_r\\output\\model.bin"
 pred_fn <- "C:\\Users\\Halvard\\Documents\\GitHub\\minimalist_multiregion_r\\output\\predict.csv"
 
+models_mult <- readRDS(bin_fn) 
+summary(models_mult[["loc1"]])
+
+library(caret) #exactly the same result with or without caret for lm
+
+dataframe_list <- get_df_per_location(trainData_fn) #from utils
+
+models <- list()
+for (location in names(dataframe_list)){
+  df <- dataframe_list[[location]]
+  df$disease_cases[is.na(df$disease_cases)] <- 0 # set NaNs to zero (not a good solution, just for the example to work)
+  model <- lm(disease_cases ~ rainfall + mean_temperature, data = df)
+  models[[location]] <- model
+}
+summary(models[["loc1"]])
+
+
+
+
 df <- read.csv(trainData_fn)
 
 model <- lm(disease_cases ~ rainfall + mean_temperature, data = df)
