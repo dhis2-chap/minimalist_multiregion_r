@@ -5,7 +5,7 @@ PWD := $(shell pwd)
 
 all: help
 
-run: train predict
+run: pull train predict
 
 train:
 	docker run --rm -v $(PWD):/app -w /app $(DOCKER_IMAGE) Rscript train.R input/trainData.csv output/model.bin
